@@ -3,10 +3,12 @@ import axios from "axios";
 import styles from "./searchBar.module.css";
 import { FaArrowRight } from "react-icons/fa";
 import Notification from "./Notification";
+import LoadingSpinner from "./LoadingSpinner";
 
-const SearchBar = () => {
+const SearchBar = ({ setAnswer }) => {
     const [query, setQuery] = useState("");
     const [notification, setNotification] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSearch = async () => {
         if (!query.trim()) {
@@ -14,36 +16,49 @@ const SearchBar = () => {
             return;
         }
 
+        setAnswer(null);
+        setIsLoading(true);
+
         try {
             const response = await axios.get(`http://127.0.0.1:5000/api/search?query=${query}`);
             console.log("Response:", response.data);
+            setAnswer(response.data);
             setNotification({ message: "Search successful!", status: "good" });
         } catch (error) {
+            setIsLoading(false);
             console.error("Error fetching data:", error);
             setNotification({ message: "Something went wrong!", status: "error" });
         }
+
+        setIsLoading(false);
     };
 
     return (
-        <div className={styles.searchBar}>
-            {notification && (
-                <Notification
-                    message={notification.message}
-                    status={notification.status}
-                    onClose={() => setNotification(null)}
-                />
+        <>
+            {isLoading ? (
+                <LoadingSpinner />
+            ) : (
+                <div className={styles.searchBar}>
+                    {notification && (
+                        <Notification
+                            message={notification.message}
+                            status={notification.status}
+                            onClose={() => setNotification(null)}
+                        />
+                    )}
+                    <input
+                        type="text"
+                        placeholder="Enter your search..."
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        className={styles.input}
+                    />
+                    <button onClick={handleSearch} className={styles.button}>
+                        <FaArrowRight />
+                    </button>
+                </div>
             )}
-            <input
-                type="text"
-                placeholder="Enter your search..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                className={styles.input}
-            />
-            <button onClick={handleSearch} className={styles.button}>
-                <FaArrowRight />
-            </button>
-        </div>
+        </>
     );
 };
 

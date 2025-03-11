@@ -13,7 +13,7 @@ Ensure you are following these rules for development:
 ## Rules
 Ensure you are following these rules for development:
 - Create a new branch in your computer for each feature
-- Branch name: First letter of name + first letter of surname + feature name. Ex.: JU-create-header | JU - Jonas Urnezius
+- Branch name: First letter of name + first letter of surname + feature name. Ex.: AB-llama | AB - Aronas Butkevicius
 - Do development on that branch
 - Push branch to Github
 - Open a new Pull Request
@@ -21,7 +21,7 @@ Ensure you are following these rules for development:
 - Each small task has its own branch!
 
 ## Installation & Setup
-To get started with HomeIntel, follow these steps:
+To get started with Rocket Hackathon, follow these steps:
 
 ### Clone the Repository
 ```sh

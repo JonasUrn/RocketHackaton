@@ -1,0 +1,28 @@
+.answerBox {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: left;
+    width: 100%;
+    color: black;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.section {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-left: 4px solid #b313b3;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 5px;
+}
+
+h2 {
+    margin-bottom: 5px;
+    font-size: 1.3rem;
+    color: #b313b3;
+}
+
+p {
+    font-size: 1rem;
+    font-weight: normal;
+}

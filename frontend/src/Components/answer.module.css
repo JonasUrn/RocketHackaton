@@ -26,3 +26,15 @@ p {
     font-size: 1rem;
     font-weight: normal;
 }
+
+.reference {
+    color: black;
+    text-decoration: none;
+    transition: all 500 ease-out;
+}
+
+.reference:hover {
+    color: #b313b3;
+    text-decoration: underline;
+    cursor: pointer;
+}

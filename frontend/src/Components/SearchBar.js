@@ -22,8 +22,13 @@ const SearchBar = ({ setAnswer }) => {
         try {
             const response = await axios.get(`http://127.0.0.1:5000/api/search?query=${query}`);
             console.log("Response:", response.data);
-            setAnswer(response.data);
-            setNotification({ message: "Search successful!", status: "good" });
+            if (response.data["short_answer"] === "error") {
+                setNotification({ message: "Something went wrong!", status: "error" });
+                setAnswer(null);
+            } else {
+                setAnswer(response.data);
+                setNotification({ message: "Search successful!", status: "good" });
+            }
         } catch (error) {
             setIsLoading(false);
             console.error("Error fetching data:", error);

@@ -10,7 +10,7 @@ def search_chroma(query):
 
     results = collection.query(
         query_embeddings=[query_embedding],
-        n_results=1
+        n_results=3
     )
 
     top_3_results = results["metadatas"][0]

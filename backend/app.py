@@ -20,13 +20,12 @@ def search():
     
     new_query = rephrase_query(query)
     new_query = new_query[1:len(new_query)-1]
-    new_query += " information"
     
     print(f"Query: {new_query}")
     
     answer = search_chroma(new_query)
     
-    final_answer = rephrase_answer(answer, new_query)
+    final_answer = rephrase_answer(answer, query, 0)
     
     print(final_answer)
     

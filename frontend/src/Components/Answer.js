@@ -4,7 +4,21 @@ import styles from "./answer.module.css";
 const Answer = ({ answerData }) => {
     if (!answerData) return null;
 
-    const { short_answer, detailed_answer, references } = answerData;
+    const { short_answer, detailed_answer, references, links } = answerData;
+
+    const handleClick = (linkPart) => {
+        var link = "";
+
+        if (linkPart.startsWith("sg")) {
+            link = "https://www.redbooks.ibm.com/redbooks/pdfs/" + linkPart;
+        } else if (linkPart.startsWith("redp")) {
+            link = "https://www.redbooks.ibm.com/redpapers/pdfs/" + linkPart;
+        }
+
+        if (link) {
+            window.open(link, "_blank");
+        }
+    }
 
     return (
         <div className={styles.answerBox}>
@@ -22,12 +36,14 @@ const Answer = ({ answerData }) => {
                 </div>
             )}
 
-            {references && (
-                <div className={styles.section}>
-                    <h2>References</h2>
-                    <p>{references}</p>
-                </div>
-            )}
+            {links && (<div className={styles.section}>
+                <h2>References</h2>
+                {links.map((link, index) => (
+                    <p key={index} onClick={() => handleClick(link)} className={styles.reference}>
+                        {link}
+                    </p>
+                ))}
+            </div>)}
         </div>
     );
 };

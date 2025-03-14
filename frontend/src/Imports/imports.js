@@ -1,3 +1,3 @@
-import backgroundRocket from "./background.png";
+import backgroundRocket from "./background.jpg";
 
 export { backgroundRocket }

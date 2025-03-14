@@ -1,6 +1,66 @@
 import ollama
 import re
 
+def select_best_query(q1, q2, q3, query):
+    prompt = f"""You are given a user query and three fixed queries. Your task is to select the best-matching fixed query for the given user query. 
+    
+    ### Instructions:
+    - Analyze which of the three fixed queries aligns most closely with the intent and meaning of the user query.
+    - Return **only** the number corresponding to the best query: **1, 2, or 3**.
+    - Do **not** provide explanations, reasoning, or any extra text—just the number.
+
+    ### Input:
+    User Query: "{query}"  
+    Query 1: "{q1}"  
+    Query 2: "{q2}"  
+    Query 3: "{q3}"  
+
+    ### Output:
+    (Return only one number of: 1, 2, or 3)
+    """
+
+    response = ollama.generate(model="llama3.2", prompt=prompt)
+    response = response["response"].strip()
+    
+    if response == "1":
+        return q1
+    elif response == "2":
+        return q2
+    else:
+        return q3
+    
+def select_best_answer(a1, a2, a3, query, context):
+    prompt = f"""You are given a user query, a contextual reference, and three possible answers. Your task is to determine which answer best matches the user query while considering the provided context.
+
+    ### Instructions:
+    - Analyze all three answers in relation to the **user query** and **context**.
+    - Select the answer that is **most relevant, accurate, and aligned** with the query.
+    - Return **only** the number corresponding to the best answer: **1, 2, or 3**.
+    - Do **not** provide explanations, reasoning, or any extra text—just the number.
+
+    ### Input:
+    **User Query:** "{query}"  
+    **Context:** "{context}"  
+
+    **Answer 1:** "{a1}"  
+    **Answer 2:** "{a2}"  
+    **Answer 3:** "{a3}"  
+
+    ### Output:
+    (Return only one number of: 1, 2, or 3)
+    """
+
+    response = ollama.generate(model="llama3.2", prompt=prompt)
+    response = response["response"].strip()
+
+    if response == "1":
+            return a1
+    elif response == "2":
+            return a2
+    else:
+            return a3
+    
+
 def rephrase_query(user_query):
     prompt = f"""Rewrite the following user query into a **concise and structured keyword phrase** for searching in ChromaDB.
 
@@ -32,6 +92,7 @@ def rephrase_query(user_query):
 def rephrase_answer(answer, query, counter):
     prompt = f"""
         Summarize the given answer while ensuring clarity and relevance to the query. The answer comes from three different files—select the most relevant parts.
+        The answer must match the context of what user asked in the query.
 
         ### **Guidelines:**
         - **Exclude references to figures, tables, or images.**  
@@ -59,23 +120,29 @@ def rephrase_answer(answer, query, counter):
     response = ollama.chat(model="llama3.2", messages=[{"role": "user", "content": prompt}])
     content = response["message"]["content"].strip()
     
+    print("=========================================")
+    print("CONTENT")
+    print("=========================================")
     print(content) 
+    print("=========================================")
+    print("query")
+    print("=========================================")
     print(query)
+    print("=========================================")
     
     short_answer = ""
     detailed_answer = ""
     references = ""
     
-    if "**1. Short Answer:**" not in content or "**2. Detailed Answer:**" not in content or "**3. References:**" not in content:
-        if "**Short Answer:**" not in content or "**Detailed Answer:**" not in content or "**3. References:**" not in content:
-            if counter < 3:
+    if "Short Answer:" not in content or "Detailed Answer:" not in content or "References:" not in content:
+        if counter < 3:
                 rephrase_answer(answer, query, counter + 1)
-            else:
-                return {
-                    "short_answer": "error",
-                    "detailed_answer": "error",
-                    "references": "error",
-                }
+        else:
+            return {
+                "short_answer": "error",
+                "detailed_answer": "error",
+                "references": "error",
+            }
         
     if "**1. Short Answer:**" in content or "**Short Answer:**" in content:
         short_answer = content.split("**1. Short Answer:**")[1].split("**2. Detailed Answer:**")[0].strip()
@@ -86,18 +153,11 @@ def rephrase_answer(answer, query, counter):
     if "**3. References:**" in content or "**3. References:**" in content:
         references = content.split("**3. References:**")[1].strip()
     
-    ref_list = []
-    
-    if "," in references:        
-        ref_list = references.split(",")
-    elif "*" in references:
-        ref_list = references.split("*")
-    
-    ref_links = []
-    
-    for link in ref_list:
-        link_x = link.strip()
-        ref_links.append(link_x)
+    separators = r"[,\n\*\-\+=]"
+    references = references.strip()
+    ref_list = [ref.strip() for ref in re.split(separators, references) if ref.strip()]
+
+    ref_links = [ref.strip() for ref in ref_list if ref.strip() and "sg" in ref or "redp" in ref]
 
     return {
         "short_answer": short_answer,

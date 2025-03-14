@@ -25,12 +25,11 @@ def search():
     
     answer = get_user_input(new_query)
     
-    final_answer = rephrase_answer(answer, query, 0)
-    
-    print(final_answer)
-    
-    return final_answer
+    return answer
     
     
 if __name__ == '__main__':
     app.run(debug=True)
+    
+
+# What is SPbD at IBM?

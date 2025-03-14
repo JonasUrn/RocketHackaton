@@ -25,7 +25,7 @@ def retrieve_relevant_chunks(relevant_docs, user_query, n_results=5):
     results = content_collection.query(
         query_embeddings=[query_embedding],
         n_results=n_results,
-        where={"source": {"$in": relevant_docs}}  # Filter by identified sources
+        where={"source": {"$in": relevant_docs}} 
     )
     
     retrieved_data = []
@@ -50,11 +50,19 @@ def get_final_context(user_query):
 
 def get_user_input(query):
     new_query = rephrase_query(query)
-    print(new_query)
+    new_query1 = rephrase_query(query)
+    new_query2 = rephrase_query(query)
+    
+    best_query = select_best_query(new_query, new_query1, new_query2, query)
 
-    context = get_final_context(new_query)
-    print(context)
+    context = get_final_context(best_query)
+    
     answer = rephrase_answer(context, query, 3)
-    print(answer)
+    answer1 = rephrase_answer(context, query, 3)
+    answer2 = rephrase_answer(context, query, 3)
+    
+    best_answer = select_best_answer(answer, answer1, answer2, best_query, context)
+    
+    return best_answer
 
 

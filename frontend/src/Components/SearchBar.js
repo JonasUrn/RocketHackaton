@@ -43,25 +43,28 @@ const SearchBar = ({ setAnswer }) => {
             {isLoading ? (
                 <LoadingSpinner />
             ) : (
-                <div className={styles.searchBar}>
-                    {notification && (
-                        <Notification
-                            message={notification.message}
-                            status={notification.status}
-                            onClose={() => setNotification(null)}
+                <>
+                    <h1>Search for Something</h1>
+                    <div className={styles.searchBar}>
+                        {notification && (
+                            <Notification
+                                message={notification.message}
+                                status={notification.status}
+                                onClose={() => setNotification(null)}
+                            />
+                        )}
+                        <input
+                            type="text"
+                            placeholder="Enter your search..."
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            className={styles.input}
                         />
-                    )}
-                    <input
-                        type="text"
-                        placeholder="Enter your search..."
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        className={styles.input}
-                    />
-                    <button onClick={handleSearch} className={styles.button}>
-                        <FaArrowRight />
-                    </button>
-                </div>
+                        <button onClick={handleSearch} className={styles.button}>
+                            <FaArrowRight />
+                        </button>
+                    </div>
+                </>
             )}
         </>
     );

@@ -9,7 +9,6 @@ const Body = () => {
     return (
         <div className={styles.body}>
             <div className={styles.overlay}>
-                <h1>Search for Something</h1>
                 <SearchBar setAnswer={setAnswer} />
                 {answer && <Answer answerData={answer} />}
             </div>

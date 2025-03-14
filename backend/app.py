@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-from search_db import search_chroma
+from test import get_user_input
 from llama import rephrase_query, rephrase_answer
 
 app = Flask(__name__)
@@ -23,7 +23,7 @@ def search():
     
     print(f"Query: {new_query}")
     
-    answer = search_chroma(new_query)
+    answer = get_user_input(new_query)
     
     final_answer = rephrase_answer(answer, query, 0)
     

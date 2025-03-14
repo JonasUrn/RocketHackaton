@@ -47,13 +47,14 @@ def get_final_context(user_query):
     
     return "\n".join(text_chunks)
 
-# Example query
-# Remove this and do changes in app.py
-query = "How to define ROOTCA vsam data sets?"
-new_query = rephrase_query(query)
-print(new_query)
 
-context = get_final_context(new_query)
-print(context)
-answer = rephrase_answer(context, query, 3)
-print(answer)
+def get_user_input(query):
+    new_query = rephrase_query(query)
+    print(new_query)
+
+    context = get_final_context(new_query)
+    print(context)
+    answer = rephrase_answer(context, query, 3)
+    print(answer)
+
+

@@ -25,8 +25,8 @@ To get started with Rocket Hackathon, follow these steps:
 
 ### Clone the Repository
 ```sh
-git clone https://github.com/JonasUrn/HomeIntel.git
-cd HomeIntel
+git clone https://github.com/JonasUrn/RocketHackaton.git
+cd RocketHackaton
 ```
 
 ### Create or Switch to a Branch
@@ -45,21 +45,33 @@ git commit -m "[Your commit message]"
 git push -u origin [branch_name]
 ```
 
-## Features
--To be added...
-
 ## Requirements
 Ensure you have the following installed:
-- To be added...
+- Python
+- Ollama
+- Llama3.2
+- Pip
+- Git
+- Node.js
 
 ## Running the Project
 1. Install dependencies:
    ```sh
-   ...
+   - ollama
+   - flask: Flask, jsonify, request
+   - flask_cors: CORS
+   - chromadb
+   - sentence_transformers
+   - fitz
+   - tqdm
    ```
 2. Run the main script:
    ```sh
-   ...
+   cd backend
+   python app.py
+   cd ..
+   cd frontend
+   npm start
    ```
 
 ## Contribution
